@@ -1,6 +1,7 @@
 package com.codermast.sky.interceptor;
 
 import com.codermast.sky.constant.JwtClaimsConstant;
+import com.codermast.sky.context.BaseContext;
 import com.codermast.sky.properties.JwtProperties;
 import com.codermast.sky.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -46,11 +47,15 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             log.info("jwt校验:{}", token);
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
+
+            // 将 jwt 中解析出来的用户 id 添加到 ThreadLocal 中
+            BaseContext.setCurrentId(empId);
+
             log.info("当前员工id：", empId);
             //3、通过，放行
             return true;
         } catch (Exception ex) {
-            //4、不通过，响应401状态码
+            //4、不通过，响应 401 状态码
             response.setStatus(401);
             return false;
         }

@@ -1,5 +1,8 @@
-package com.codermast.sky.admin;
+package com.codermast.sky.controller.admin;
 
+import com.codermast.sky.dto.EmployeeDTO;
+import com.codermast.sky.dto.EmployeePageQueryDTO;
+import com.codermast.sky.result.PageResult;
 import com.codermast.sky.service.EmployeeService;
 import com.codermast.sky.constant.JwtClaimsConstant;
 import com.codermast.sky.dto.EmployeeLoginDTO;
@@ -8,12 +11,11 @@ import com.codermast.sky.properties.JwtProperties;
 import com.codermast.sky.result.Result;
 import com.codermast.sky.utils.JwtUtil;
 import com.codermast.sky.vo.EmployeeLoginVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +26,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
+@Api(tags = "员工管理")
 public class EmployeeController {
 
     @Autowired
@@ -37,6 +40,7 @@ public class EmployeeController {
      * @param employeeLoginDTO
      * @return
      */
+    @ApiOperation("登录")
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
         log.info("员工登录：{}", employeeLoginDTO);
@@ -66,9 +70,20 @@ public class EmployeeController {
      *
      * @return
      */
+    @ApiOperation("退出登录")
     @PostMapping("/logout")
     public Result<String> logout() {
         return Result.success();
+    }
+
+    //新增员工
+    @ApiOperation("注册")
+    @PostMapping
+    public Result<EmployeeDTO> save(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("新增员工：{}", employeeDTO);
+        employeeService.save(employeeDTO);
+
+        return Result.success(employeeDTO);
     }
 
 }
