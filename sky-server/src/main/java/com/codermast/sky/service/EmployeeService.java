@@ -1,7 +1,7 @@
 package com.codermast.sky.service;
 
-import com.sky.dto.EmployeeLoginDTO;
-import com.sky.entity.Employee;
+import com.codermast.sky.dto.EmployeeLoginDTO;
+import com.codermast.sky.entity.Employee;
 
 public interface EmployeeService {
 
