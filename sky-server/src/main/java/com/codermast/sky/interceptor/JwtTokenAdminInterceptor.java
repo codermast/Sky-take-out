@@ -1,8 +1,8 @@
 package com.codermast.sky.interceptor;
 
-import com.sky.constant.JwtClaimsConstant;
-import com.sky.properties.JwtProperties;
-import com.sky.utils.JwtUtil;
+import com.codermast.sky.constant.JwtClaimsConstant;
+import com.codermast.sky.properties.JwtProperties;
+import com.codermast.sky.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
