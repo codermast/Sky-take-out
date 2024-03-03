@@ -4,5 +4,5 @@ sky:
     host: localhost
     port: 3306
     database: sky_take_out
-    username: root
-    password: root
+    username: codermast
+    password: 123456
