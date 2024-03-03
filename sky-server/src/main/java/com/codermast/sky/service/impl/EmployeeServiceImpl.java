@@ -6,12 +6,16 @@ import com.codermast.sky.constant.StatusConstant;
 import com.codermast.sky.context.BaseContext;
 import com.codermast.sky.dto.EmployeeDTO;
 import com.codermast.sky.dto.EmployeeLoginDTO;
+import com.codermast.sky.dto.EmployeePageQueryDTO;
 import com.codermast.sky.entity.Employee;
 import com.codermast.sky.exception.AccountLockedException;
 import com.codermast.sky.exception.AccountNotFoundException;
 import com.codermast.sky.exception.PasswordErrorException;
 import com.codermast.sky.mapper.EmployeeMapper;
+import com.codermast.sky.result.PageResult;
 import com.codermast.sky.service.EmployeeService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -66,7 +71,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void save(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         // 属性值复制
-        BeanUtils.copyProperties(employeeDTO,employee);
+        BeanUtils.copyProperties(employeeDTO, employee);
 
         // 设置用户状态为可用
         employee.setStatus(StatusConstant.ENABLE);
@@ -85,6 +90,28 @@ public class EmployeeServiceImpl implements EmployeeService {
         // TODO 这里的 employee 对象的 id 是 null，没有自动获取
         employeeMapper.insert(employee);
 
+    }
+
+    @Override
+    // 分页查询
+    public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        // 开始分页查询
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
+
+        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
+
+        long total = page.getTotal();
+
+        List<Employee> records = page.getResult();
+        return new PageResult(total, records);
+    }
+
+    @Override
+    // 根据员工 id 查员工信息
+    public EmployeeDTO getById(long id) {
+        EmployeeDTO employeeDTO = employeeMapper.getById(id);
+
+        return employeeDTO;
     }
 
 }

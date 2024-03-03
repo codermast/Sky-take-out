@@ -86,4 +86,23 @@ public class EmployeeController {
         return Result.success(employeeDTO);
     }
 
+    // 员工分页查询
+    @GetMapping("/page")
+    public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
+        log.info("员工分页查询，参数为：{}", employeePageQueryDTO);
+
+        PageResult pageResult =  employeeService.pageQuery(employeePageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+    // 根据 id 查员工
+    @GetMapping("/{id}")
+    public Result<EmployeeDTO> queryById(@PathVariable long id){
+        log.info("员工的 ID 为：{}",id);
+
+        EmployeeDTO employeeDTO =  employeeService.getById(id);
+        return Result.success(employeeDTO);
+    }
+
+
 }

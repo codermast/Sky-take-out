@@ -1,6 +1,9 @@
 package com.codermast.sky.mapper;
 
+import com.codermast.sky.dto.EmployeeDTO;
+import com.codermast.sky.dto.EmployeePageQueryDTO;
 import com.codermast.sky.entity.Employee;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -8,11 +11,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface EmployeeMapper {
 
-    /**
-     * 根据用户名查询员工
-     * @param username
-     * @return
-     */
+    // 根据用户名查询员工
     @Select("select * from employee where username = #{username}")
     Employee getByUsername(String username);
 
@@ -21,4 +20,11 @@ public interface EmployeeMapper {
             "values " +
             "(#{name},#{username},#{password},#{phone},#{sex},#{idNumber},#{createTime},#{updateTime},#{createUser},#{updateUser},#{status})")
     void insert(Employee employee);
+
+    // 分页查询员工
+    Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
+
+
+    @Select("select * from employee where id = #{id}")
+    EmployeeDTO getById(long id);
 }
