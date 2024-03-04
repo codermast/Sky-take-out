@@ -1,23 +1,11 @@
 package com.codermast.sky.service;
 
-import com.codermast.sky.dto.EmployeeDTO;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.codermast.sky.dto.EmployeeLoginDTO;
-import com.codermast.sky.dto.EmployeePageQueryDTO;
 import com.codermast.sky.entity.Employee;
-import com.codermast.sky.result.PageResult;
 
-public interface EmployeeService {
+public interface EmployeeService extends IService<Employee> {
 
-    /**
-     * 员工登录
-     * @param employeeLoginDTO
-     * @return
-     */
+    // 员工登录
     Employee login(EmployeeLoginDTO employeeLoginDTO);
-
-    void save(EmployeeDTO employeeDTO);
-
-    PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
-
-    EmployeeDTO getById(long id);
 }
