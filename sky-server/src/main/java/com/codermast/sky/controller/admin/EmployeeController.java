@@ -101,13 +101,12 @@ public class EmployeeController {
 
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(Employee::getId);
-
         queryWrapper.like(name != null,Employee::getName,name);
 
         employeeService.page(page, queryWrapper);
 
         PageResult pageResult = new PageResult();
-        pageResult.setTotal(page.getTotal());
+        pageResult.setTotal(page.getRecords().size());
         pageResult.setRecords(page.getRecords());
 
         return Result.success(pageResult);
