@@ -92,6 +92,7 @@ public class EmployeeController {
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
         log.info("员工分页查询，参数为：{}", employeePageQueryDTO);
 
+        String name = employeePageQueryDTO.getName();
         int pageNum = employeePageQueryDTO.getPage();
         int pageSize = employeePageQueryDTO.getPageSize();
 
@@ -100,6 +101,8 @@ public class EmployeeController {
 
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(Employee::getId);
+
+        queryWrapper.like(name != null,Employee::getName,name);
 
         employeeService.page(page, queryWrapper);
 
