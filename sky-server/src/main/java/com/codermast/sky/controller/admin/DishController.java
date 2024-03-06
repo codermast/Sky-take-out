@@ -4,15 +4,19 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.codermast.sky.dto.DishDTO;
 import com.codermast.sky.dto.DishPageQueryDTO;
+import com.codermast.sky.entity.Category;
 import com.codermast.sky.entity.Dish;
 import com.codermast.sky.entity.DishFlavor;
 import com.codermast.sky.result.PageResult;
 import com.codermast.sky.result.Result;
+import com.codermast.sky.service.CategoryService;
 import com.codermast.sky.service.DishFlavorService;
 import com.codermast.sky.service.DishService;
+import com.codermast.sky.vo.DishVO;
 import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -28,6 +32,9 @@ public class DishController {
 
     @Autowired
     private DishFlavorService dishFlavorService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     // 分页查询
     @GetMapping("/page")
@@ -48,8 +55,19 @@ public class DishController {
         dishService.page(page,queryWrapper);
 
         PageResult pageResult = new PageResult();
-        pageResult.setTotal(page.getRecords().size());
-        pageResult.setRecords(page.getRecords());
+
+        List<DishVO> dishVOList = new ArrayList<>();
+        for (Dish record : page.getRecords()) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(record,dishVO);
+
+            Category category = categoryService.getById(record.getCategoryId());
+
+            dishVO.setCategoryName(category.getName());
+            dishVOList.add(dishVO);
+        }
+
+        pageResult.setRecords(dishVOList);
 
         return Result.success(pageResult);
     }
@@ -107,5 +125,17 @@ public class DishController {
         dishService.updateById(dish);
 
         return Result.success();
+    }
+
+    // 根据 categoryId 查 dishList
+    @GetMapping("/list")
+    public Result<List<Dish>> list(Long categoryId){
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+
+        queryWrapper.eq(Dish::getCategoryId,categoryId);
+
+        List<Dish> list = dishService.list(queryWrapper);
+
+        return Result.success(list);
     }
 }

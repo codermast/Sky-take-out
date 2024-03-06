@@ -6,3 +6,8 @@ sky:
     database: sky_take_out
     username: codermast
     password: 123456
+  alioss:
+    endpoint: oss-cn-hongkong.aliyuncs.com
+    access-key-id: LTAI4FrjUvcpG4gxN5xd7gsU
+    access-key-secret: lHzHmtpwUL4WpWgiGlC7LkpKGTKkal
+    bucket-name: cvbdfgqwe

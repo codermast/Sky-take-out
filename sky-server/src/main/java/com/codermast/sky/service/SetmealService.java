@@ -1,0 +1,7 @@
+package com.codermast.sky.service;
+
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.codermast.sky.entity.Setmeal;
+
+public interface SetmealService extends IService<Setmeal> {
+}

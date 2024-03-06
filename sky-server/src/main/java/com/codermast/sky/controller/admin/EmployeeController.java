@@ -21,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -85,7 +86,7 @@ public class EmployeeController {
 
         BeanUtils.copyProperties(employeeDTO, employee);
 
-        employee.setPassword(PasswordConstant.DEFAULT_PASSWORD);
+        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
         employee.setUpdateUser(BaseContext.getCurrentId());
         employee.setCreateUser(BaseContext.getCurrentId());
         employee.setCreateTime(LocalDateTime.now());

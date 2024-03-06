@@ -20,7 +20,7 @@ public class DishFlavor implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
     //菜品id
     private Long dishId;
