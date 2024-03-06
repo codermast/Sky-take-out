@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.codermast.sky.constant.JwtClaimsConstant;
+import com.codermast.sky.constant.PasswordConstant;
+import com.codermast.sky.context.BaseContext;
 import com.codermast.sky.dto.EmployeeDTO;
 import com.codermast.sky.dto.EmployeeLoginDTO;
 import com.codermast.sky.dto.EmployeePageQueryDTO;
@@ -21,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,6 +84,13 @@ public class EmployeeController {
         Employee employee = new Employee();
 
         BeanUtils.copyProperties(employeeDTO, employee);
+
+        employee.setPassword(PasswordConstant.DEFAULT_PASSWORD);
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+
         employeeService.save(employee);
 
         return Result.success(employeeDTO);
@@ -101,12 +111,12 @@ public class EmployeeController {
 
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(Employee::getId);
-        queryWrapper.like(name != null,Employee::getName,name);
+        queryWrapper.like(name != null, Employee::getName, name);
 
         employeeService.page(page, queryWrapper);
 
         PageResult pageResult = new PageResult();
-        pageResult.setTotal(page.getRecords().size());
+        pageResult.setTotal(page.getTotal());
         pageResult.setRecords(page.getRecords());
 
         return Result.success(pageResult);
@@ -144,5 +154,15 @@ public class EmployeeController {
         } else {
             return Result.error("更新失败！");
         }
+    }
+
+    // 更改员工状态
+    @PostMapping("/status/{status}")
+    public Result status(@PathVariable int status, Employee employee) {
+        employee.setStatus(status);
+
+        employeeService.updateById(employee);
+
+        return Result.success();
     }
 }

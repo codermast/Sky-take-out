@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/category")
@@ -100,6 +101,15 @@ public class CategoryController {
         }else {
             return Result.error("删除失败");
         }
+    }
 
+    // 获取分类列表
+    @GetMapping("/list")
+    public Result list(Long type){
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Category::getType,type);
+
+        List<Category> list = categoryService.list(queryWrapper);
+        return Result.success(list);
     }
 }
