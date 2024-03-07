@@ -45,8 +45,17 @@ sky:
     admin-ttl: 7200000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+
+    # 设置 jwt 签名加密时使用的秘钥
+    user-secret-key: codermast_user
+    user-token-name: authentication
+    user-ttl: 7200000
+
   alioss:
     endpoint: ${sky.alioss.endpoint}
     access-key-id: ${sky.alioss.access-key-id}
     access-key-secret: ${sky.alioss.access-key-secret}
     bucket-name: ${sky.alioss.bucket-name}
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
