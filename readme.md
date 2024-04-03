@@ -6,7 +6,7 @@
 
 欢迎关注我的微信公众号，可以随时和我交流。
 
-![](https://github.com/CoderMast/codermast/blob/1efef0209335977754163ebc513b7d4b91eeaf41/images/%E6%89%AB%E7%A0%81_%E7%99%BD%E8%89%B2%E7%89%88.png)
+![](https://img2.imgtp.com/2024/04/03/2wunYds8.png)
 
 
 ## 项目介绍
